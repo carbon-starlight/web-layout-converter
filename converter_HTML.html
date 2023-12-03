@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="client-nojs" lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="color-scheme" content="dark" />
+        
+        
+        <style>
+            .float-left-form {
+        float: left;
+        margin-right: 20px; /* this will create space after every form */
+    }
+</style>
+
+<style>
+    * {
+        font-family: "JetBrains Mono";
+    }
+</style>
+
+<title>Converter</title>
+</head>
+</div>
+<form style="float: left;">
+    <label for="layouts">From </label>
+    <select id="layouts" name="layouts" onchange="updateContent()">
+        <option value="colemak">Colemak</option>
+        <option value="qwerty">QWERTY</option>
+        <option value="colemak_dh">Colemak-DH</option>
+        <option value="workman">Workman</option>
+        <option value="dvorak">Dvorak</option>
+        <option value="rulemak">Rulemak</option>
+        <option value="custom1">Custom 1</option>
+        <option value="custom2">Custom 2</option>
+    </select>
+</form>
+<form>
+    <label for="layoutsTo"> to </label>
+    <select id="layoutsTo" name="layoutsTo" onchange="updateContent()">
+        <option value="rulemak">Rulemak</option>
+        <option value="qwerty">QWERTY</option>
+        <option value="colemak">Colemak</option>
+        <option value="colemak_dh">Colemak-DH</option>
+        <option value="workman">Workman</option>
+        <option value="dvorak">Dvorak</option>
+        <option value="custom1">Custom 1</option>
+        <option value="custom2">Custom 2</option>
+    </select>
+</form>
+
+<button onclick="addThemeMetaTag()">Dark mode</button>
+<button onclick="removeThemeMetaTag()">Light mode</button>
+
+<script>
+function addThemeMetaTag() {
+    // Create the meta tag element
+    const metaTag = document.createElement("meta");
+    
+    // Set the attributes for the meta tag
+    metaTag.setAttribute("name", "color-scheme");
+    metaTag.setAttribute("content", "dark");
+  
+    // Append the meta tag to the document's head
+    document.head.appendChild(metaTag);
+  }
+  
+  function removeThemeMetaTag() {
+    // Find the existing meta tag by name
+    const metaTag = document.querySelector('meta[name="color-scheme"]');
+    
+    // Remove the meta tag if it exists
+    if (metaTag) {
+      metaTag.remove();
+    }
+  }
+</script>
+
+<!-- </p><p>Type here to convert from <script>document.getElementById('layouts').value</script> to Rulemak:<br /> -->
+    
+<script>
+    function updateContent() {
+        fullNames = {qwerty: 'QWERTY', colemak: 'Colemak', colemak_dh: 'Colemak-DH', workman: 'Workman', rulemak: 'Rulemak', dvorak: 'Dvorak', custom1: 'Custom 1', custom2: 'Custom 2'};
+        const layoutsValue = document.getElementById('layouts').value;
+        const layoutsToValue = document.getElementById('layoutsTo').value;
+        document.getElementById('instruction_txt_1').textContent = `Type here to convert from ${fullNames[layoutsValue]} to ${fullNames[layoutsToValue]}:`;
+        document.getElementById('instruction_txt_2').textContent = `Type here to convert from ${fullNames[layoutsToValue]} to ${fullNames[layoutsValue]}:`;
+    }
+    updateContent();
+</script>
+
+<style>
+    .inline {
+      display: inline;
+    }
+</style>
+
+<p id="instruction_txt_1"></p>
+<textarea rows="8" cols="80" id="txt1"></textarea>
+<br /><br />
+<!-- Type here to convert from Rulemak to QWERTY:<br /> -->
+<p id="instruction_txt_2"></p>
+<script>updateContent();</script>
+
+<textarea rows="8" cols="80" id="txt2"></textarea>
+<br /><br />
+
+<p>Insert: 
+<button onclick="insertThisInThere('	', 'txt1')">Tab</button>
+<button onclick="insertThisInThere('├', 'txt1')">├</button>
+<button onclick="insertThisInThere('└', 'txt1')">└</button>
+<button onclick="insertThisInThere('│', 'txt1')">│</button>
+<button onclick="insertThisInThere('─', 'txt1')">─</button>
+</p>
+
+Add a custom layout: type symbols corresponding from ` to = on QWERTY keyboard, then q — \, a — ',  z — /, and after — the same holding shift (using CapsLock is not recommended)<br />
+<textarea placeholder="Custom 1" rows="1" cols="80" id="custom_txt"></textarea>
+<br /><br />
+<textarea placeholder="Custom 2" rows ="1" cols="80" id="custom2_txt"></textarea>
+<br /><br />
+
+<script>
+function insertThisInThere(thisChar, thereId) {
+    // Insert thisChar character into thereId textarea
+
+    // a bit of custom code:
+    if (thereId == 'txt1') {
+        insertThisInThere(thisChar, 'txt2');
+    }
+    // the following code is universal and easily reusable in other projects
+
+	function theCursorPosition(ofThisInput) {
+		// set a fallback cursor location
+		var theCursorLocation = 0;
+ 
+		// find the cursor location via IE method...
+		if (document.selection) {
+			ofThisInput.focus();
+			var theSelectionRange = document.selection.createRange();
+			theSelectionRange.moveStart('character', -ofThisInput.value.length);
+			theCursorLocation = theSelectionRange.text.length;
+		} else if (ofThisInput.selectionStart || ofThisInput.selectionStart == '0') {
+			// or the FF way 
+			theCursorLocation = ofThisInput.selectionStart;
+		}
+		return theCursorLocation;
+	}
+ 
+	// now get ready to place our new character(s)...
+	var theIdElement = document.getElementById(thereId);
+	var currentPos = theCursorPosition(theIdElement);
+	var origValue = theIdElement.value;
+	var newValue = origValue.substr(0, currentPos) + thisChar + origValue.substr(currentPos);
+ 
+	theIdElement.value = newValue;
+ 
+}
+</script>
+
+<script>// Colemak to QWERTY Javascript converter
+    // 2006-10-08 Shai Coleman, http://colemak.com/ . Public domain. 
+    // 2023 modified by carbon-starlight for use with other and custom layouts.
+    
+    function convertColemakQwerty(txt, flag) {
+        //                `-row       | tab-row    | CL-row    |Sh-row    | SH-`-row  | SH-tab-row | SH-CL-row | SH-Sh-row
+        var qwerty     = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?";
+        var colemak    = "`1234567890-=qwfpgjluy;[]\\arstdhneio'zxcvbkm,./~!@#$%^&*()_+QWFPGJLUY:{}|ARSTDHNEIO\"ZXCVBKM<>?";
+        var rulemak    = "ё1234567890-ъяжфпгйлуыюшщэарстдчнеиоьзхцвбкм,./Ё!\"№;%:?*()_ЪЯЖФПГЙЛУЫЮШЩЭАРСТДЧНЕИОЬЗХЦВБКМ;:?";
+        var colemak_dh = "`1234567890-=qwfpbjluy;[]\\arstgmneio'zxcdvkh,./~!@#$%^&*()_+QWFPBJLUY:{}|ARSTGMNEIO\"ZXCDVKH<>?";
+        var workman    = "`1234567890-=qdrwbjfup;[]\\ashtgyneoi'zxmcvkl,./~!@#$%^&*()_+QDRWBJFUP:{}|ASHTGYNEOI\"ZXMCVKL<>?";
+        var dvorak     = "`1234567890[]',.pyfgcrl/=\\aoeuidhtns-;qjkxbmwvz~!@#$%^&*(){}\"<>PYFGCRL?+|AOEUIDHTNS_:QJKXBMWVZ";
+        var custom1 = document.getElementById('custom_txt').value
+        var custom2 = document.getElementById('custom2_txt').value
+        console.log(custom1)
+
+        var layoutFrom = document.getElementById('layouts').value
+        var layoutTo = document.getElementById('layoutsTo').value
+        if (layoutFrom == "qwerty") {
+            layoutFrom = qwerty
+        }
+        if (layoutFrom == "colemak") {
+            layoutFrom = colemak
+        }
+        if (layoutFrom == "colemak_dh") {
+            layoutFrom = colemak_dh
+        }
+        if (layoutFrom == "workman") {
+            layoutFrom = workman
+        }
+        if (layoutFrom == "dvorak") {
+            layoutFrom = dvorak
+        }
+        if (layoutFrom == "custom1") {
+            layoutFrom = custom1
+        }
+        if (layoutFrom == "custom2") {
+            layoutFrom = custom2
+        }
+        if (layoutFrom == "rulemak") {
+            layoutFrom = rulemak
+        }
+        if (layoutTo == "qwerty") {
+            layoutTo = qwerty
+        }
+        if (layoutTo == "colemak") {
+            layoutTo = colemak
+        }
+        if (layoutTo == "colemak_dh") {
+            layoutTo = colemak_dh
+        }
+        if (layoutTo == "workman") {
+            layoutTo = workman
+        }
+        if (layoutTo == "dvorak") {
+            layoutTo = dvorak
+        }
+        if (layoutTo == "custom1") {
+            layoutTo = custom1
+        }
+        if (layoutTo == "custom2") {
+            layoutTo = custom2
+        }
+        if (layoutTo == "rulemak") {
+            layoutTo = rulemak
+        }
+
+        var conv = (flag == true ? strtr(txt, layoutTo, layoutFrom) : strtr(txt, layoutFrom, layoutTo));
+        // from v to ^ if flag is true
+        
+        return (conv);
+    }
+    
+    function strtr(txt, strFrom, strTo) {
+        var ret = "";
+        for(var i = 0; i < txt.length; i++) {
+            ret += (strTo.indexOf(txt.charAt(i)) >= 0 ? strFrom.charAt(strTo.indexOf(txt.charAt(i))) : 
+                    txt.charAt(i));
+        }
+        return (ret);
+    }
+    
+    function addEventHandler(element, eventName, functionName) {  
+        if (element.addEventListener) { element.addEventListener(eventName, functionName, false); } else {
+            if (element.attachEvent) { element.attachEvent('on' + eventName, functionName); } }
+    }
+    
+    function update1() {
+        txt1converted = convertColemakQwerty(document.getElementById('txt1').value, true);
+        if (document.getElementById('txt2').value != txt1converted) { document.getElementById('txt2').value = txt1converted; }
+    }
+    function update2() {
+        txt2converted = convertColemakQwerty(document.getElementById('txt2').value, false);
+        if (document.getElementById('txt1').value != txt2converted) { document.getElementById('txt1').value = txt2converted; }
+    }
+    function update1t() { setTimeout("update1()",0); }
+    function update2t() { setTimeout("update2()",0); }
+    
+    addEventHandler(document.getElementById('txt1'), 'keydown',  update1t);
+    addEventHandler(document.getElementById('txt1'), 'change',   update1);
+    addEventHandler(document.getElementById('txt2'), 'keydown',  update2t);
+    addEventHandler(document.getElementById('txt2'), 'change',   update2);</script>
+
+</p>
+
+</div></div><div class="printfooter">
