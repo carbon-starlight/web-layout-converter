@@ -1,4 +1,4 @@
-# A web-based layout converter with Rulemak, Colemak[-DH], Workman and other layouts
+# A web-based keyboard layout converter with Rulemak, Colemak[-DH], Workman and other layouts
 
 Based on https://colemak.com/Converter, this webpage provides an easy way to use non-standard layouts on computers where they are not installed.
 
