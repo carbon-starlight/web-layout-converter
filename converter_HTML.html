@@ -30,6 +30,7 @@
         <option value="workman">Workman</option>
         <option value="dvorak">Dvorak</option>
         <option value="rulemak">Rulemak</option>
+	<option value="custom1">Engram</option>
         <option value="custom1">Custom 1</option>
         <option value="custom2">Custom 2</option>
     </select>
@@ -43,6 +44,7 @@
         <option value="colemak_dh">Colemak-DH</option>
         <option value="workman">Workman</option>
         <option value="dvorak">Dvorak</option>
+	<option value="custom1">Engram</option>
         <option value="custom1">Custom 1</option>
         <option value="custom2">Custom 2</option>
     </select>
@@ -79,7 +81,7 @@ function addThemeMetaTag() {
     
 <script>
     function updateContent() {
-        fullNames = {qwerty: 'QWERTY', colemak: 'Colemak', colemak_dh: 'Colemak-DH', workman: 'Workman', rulemak: 'Rulemak', dvorak: 'Dvorak', custom1: 'Custom 1', custom2: 'Custom 2'};
+        fullNames = {qwerty: 'QWERTY', colemak: 'Colemak', colemak_dh: 'Colemak-DH', workman: 'Workman', rulemak: 'Rulemak', dvorak: 'Dvorak', engram: 'Engram', custom1: 'Custom 1', custom2: 'Custom 2'};
         const layoutsValue = document.getElementById('layouts').value;
         const layoutsToValue = document.getElementById('layoutsTo').value;
         document.getElementById('instruction_txt_1').textContent = `Type here to convert from ${fullNames[layoutsValue]} to ${fullNames[layoutsToValue]}:`;
@@ -168,6 +170,7 @@ function insertThisInThere(thisChar, thereId) {
         var colemak_dh = "`1234567890-=qwfpbjluy;[]\\arstgmneio'zxcdvkh,./~!@#$%^&*()_+QWFPBJLUY:{}|ARSTGMNEIO\"ZXCDVKH<>?";
         var workman    = "`1234567890-=qdrwbjfup;[]\\ashtgyneoi'zxmcvkl,./~!@#$%^&*()_+QDRWBJFUP:{}|ASHTGYNEOI\"ZXMCVKL<>?";
         var dvorak     = "`1234567890[]',.pyfgcrl/=\\aoeuidhtns-;qjkxbmwvz~!@#$%^&*(){}\"<>PYFGCRL?+|AOEUIDHTNS_:QJKXBMWVZ";
+        var engram     = "[1234567890]/byou'\"ldwvz#@ciea,.htsnqgxjk-?rmfp{|=~+<>^&%*}\\BYOU()LDWVZ$`CIEA;:HTSNQGXJK_!RMFP";
         var custom1 = document.getElementById('custom_txt').value
         var custom2 = document.getElementById('custom2_txt').value
         console.log(custom1)
@@ -198,6 +201,9 @@ function insertThisInThere(thisChar, thereId) {
         if (layoutFrom == "rulemak") {
             layoutFrom = rulemak
         }
+	if (layoutFrom == "engram") {
+            layoutFrom = engram
+        }
         if (layoutTo == "qwerty") {
             layoutTo = qwerty
         }
@@ -221,6 +227,9 @@ function insertThisInThere(thisChar, thereId) {
         }
         if (layoutTo == "rulemak") {
             layoutTo = rulemak
+        }
+	if (layoutTo == "engram") {
+            layoutTo = engram
         }
 
         var conv = (flag == true ? strtr(txt, layoutTo, layoutFrom) : strtr(txt, layoutFrom, layoutTo));
