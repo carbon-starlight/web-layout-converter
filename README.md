@@ -12,6 +12,7 @@ Supported layouts:
 * Rulemak
 * Dvorak
 * Workman
+* Engram
 * Custom 1
 * Custom 2
 
