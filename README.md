@@ -15,4 +15,6 @@ Supported layouts:
 * Custom 1
 * Custom 2
 
-Don't forget to periodically transfer typed text to a main editing app, as web-based text editors are unstable. Usage of [PKL](https://sourceforge.net/projects/pkl/) or PKL-like apps instead if possible is recommended.
+Try online: https://raw.githack.com/carbon-starlight/web-layout-converter/main/converter_HTML.html
+
+Don't forget to periodically transfer typed text to a main editing app, as web-based text editors are unstable. Usage of [EPKL](https://dreymar.colemak.org/), [PKL](https://sourceforge.net/projects/pkl/) or PKL-like apps instead if possible is recommended.
