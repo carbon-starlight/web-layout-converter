@@ -19,16 +19,6 @@
 	<title>Converter</title>
 </head>
 </div>
-<script>
-	window.onload = function() {
-	  const params = new URLSearchParams(window.location.search);
-	  const valueFromUrl = params.get('layoutsTo');
-	  const select = document.getElementById('layoutsTo');
-	  if (valueFromUrl && select) {
-	    select.value = valueFromUrl;
-	  }
-	};
-</script>
 <form style="float: left;">
     <label for="layouts">From </label>
     <select id="layouts" name="layouts" onchange="updateContent()">
@@ -57,6 +47,20 @@
         <option value="custom2">Custom 2</option>
     </select>
 </form>
+<script>
+	window.onload = function() {
+	  const params = new URLSearchParams(window.location.search);
+	  const layouts = params.get('layouts');
+	  const layoutsTo = params.get('layoutsTo');
+	
+	  if (layouts) {
+	    document.getElementById('layouts').value = layouts;
+	  }
+	  if (layoutsTo) {
+	    document.getElementById('layoutsTo').value = layoutsTo;
+	  }
+	};
+</script>
 
 <button onclick="addThemeMetaTag()">Dark mode</button>
 <button onclick="removeThemeMetaTag()">Light mode</button>
