@@ -19,6 +19,16 @@
 	<title>Converter</title>
 </head>
 </div>
+<script>
+	window.onload = function() {
+	  const params = new URLSearchParams(window.location.search);
+	  const valueFromUrl = params.get('layoutsTo');
+	  const select = document.getElementById('layoutsTo');
+	  if (valueFromUrl && select) {
+	    select.value = valueFromUrl;
+	  }
+	};
+</script>
 <form style="float: left;">
     <label for="layouts">From </label>
     <select id="layouts" name="layouts" onchange="updateContent()">
